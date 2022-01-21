@@ -120,7 +120,7 @@ else:
     #print('name looks good comrade')
 
 
-secret_number = 9
+'''secret_number = 9
 guess_count = 0
 guess_limit = 3
 while guess_count < guess_limit:
@@ -131,6 +131,39 @@ while guess_count < guess_limit:
         break
 else:
     print(' sorry, you failed boobies')
+
+start - to start the car
+stop - to stop the car
+quit - to exit
+
+>help'''
+
+command = ''
+started = False
+while True:
+    command = input('> ').lower()
+    if command == 'start':
+        if started:
+            print('car has already started')
+        else:
+            started = True
+            print('car has started')
+    elif command == 'stop':
+        if not started:
+            print('car has already stopped')
+        else:
+            started = False
+            print('car has stopped')
+    elif command == 'help':
+        print('''
+start - to start the car, 
+stop - to stop the car,
+quit - to exit''')
+    elif command == 'quit':
+        break
+    else:
+        print("sorry, I don't understand that")
+
 
 
 
