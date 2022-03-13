@@ -7,16 +7,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from wordcloud import WordCloud
 
+# CREATE a web driver to access indeed.com and scrape the data from the first page.
 s = Service('C:/Users/Natalie Fletcher/Dropbox (CSL)/Natalie Folder/Arden/Python/chromedriver_win32/chromedriver.exe')
+driver = webdriver.Chrome(service=s)
+
+# SET the variables for 'next buttons' at the bottom of the page
 next_button_page_one = '//*[@id="resultsCol"]/nav/div/ul/li[6]/a'
 next_button_two = '//*[@id="resultsCol"]/nav/div/ul/li[7]/a'
-driver = webdriver.Chrome(service=s)
 actions = ActionChains(driver)
 URL = 'https://uk.indeed.com/jobs?q&l=Preston%2C%20Lancashire&vjk=ba2a57eca5a1f7de'
 driver.get(URL)
 
+
 company_names_list = []
 
+# FIND the element by name of 'companyName' scrape and append into a list
 company_names = driver.find_elements(By.CLASS_NAME, 'companyName')
 for company_name in company_names:
     company_names_list.append(company_name.text)
@@ -35,6 +40,8 @@ driver.implicitly_wait(15)
 # CLICK X button on popup
 driver.find_element(By.XPATH, '//*[@id="popover-x"]/button').click()
 
+# CREATE a while loop to repeat the scrape and append,
+# FIND the 'next' button, scroll to the next button and click to navigate to next page until list is over 500 rows
 while len(company_names_list) < 500:
     scraped_companies = driver.find_elements(By.CLASS_NAME, 'companyName')
     for company_name in scraped_companies:
@@ -67,7 +74,7 @@ for item in cleaned_company_names_list:
 # SET the header names on each column
 d = {'Company Name': company_result, 'Count': count_result}
 
-# CREATE df and saving to CSV
+# CREATE df and save to CSV
 df = pd.DataFrame(d)
 df.to_csv('C:/Users/Natalie Fletcher/Desktop/Indeed_Company_Data.csv')
 
@@ -109,6 +116,7 @@ ax.set_title('Companies Advertising')
 ax.legend(d['Company Name'], loc='upper right')
 ax.axis('equal')
 plt.tight_layout()
+plt.show()
 
 # CREATE donut chart
 plt.pie(y, labels=company_result, autopct='%1.1f%%', pctdistance=0.85)
